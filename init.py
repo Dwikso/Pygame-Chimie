@@ -2,7 +2,7 @@ import pygame
 from sys import exit
 
 pygame.init()
-screen = pygame.display.set_mode((1800,1000))
+screen = pygame.display.set_mode((1900,1000))
 pygame.display.set_caption('Tableau Périodique')
 font = pygame.font.Font(None, 36)
 
@@ -27,12 +27,6 @@ checked = False
 
 rectangle = pygame.Rect(250,160,600,200)
 rectangle_1 = pygame.Rect(260,170,580,180)
-
-rectangles = [
-    (250,160,600,200),
-    (260,170,580,180)
-]
-
 
 
 non_reactifs = {
@@ -76,7 +70,7 @@ propriete_inconnue = {
     (16,6) : "Ts" , (17,6) : "Og"
 }
 
-lanthandie = {
+lanthanide = {
     (3,7) : "Ce", (4,7) : "Pr" , (5,7) : "Nd" , (6,7) : "Pm",
     (7,7) : "Sm" , (8,7) : "Eu" , (9,7) : "Gd" , (10,7) : "Tb",
     (11,7) : "Dy", (12,7) : "Ho" , (13,7) : "Er" , (14,7) : "Tm",
@@ -87,6 +81,11 @@ actinide = {
     (2,6) : "Ac",(3,8) : "Th", (4,8) : "Pa" , (5,8) : "U" ,
     (6,8) : "Np", (7,8) : "Pu" , (8,8) : "Am" , (9,8) : "Cm" , (10,8) : "Bk",
     (11,8) : "Cf", (12,8) : "Es" , (13,8) : "Fm" , (14,8) : "Md", (15,8): "No", (16,8) : "Lr"
+}
+
+gaz_noble = {
+    (17,0) : "He", (17,1) : "Ne", (17,2) : "Ar", (17,3) : "Kr",
+    (17,4) : "Xe", (17,5) : "Rn"
 }
 
 element_chimiques = {
@@ -239,10 +238,13 @@ def dessine_tableau():
             else:
                 pygame.draw.rect(screen, marron_rougeatre, (10 + i * 100, 150 + j * 80, 60, 60))
 
-
+            if (i, j) in element_chimiques:
+                num_chimique = element_chimiques[(i, j)][0]
+            else:
+                num_chimique = ""
 
             if (i, j) in element_chimiques:
-                elm_chimique = element_chimiques[(i, j)][0]
+                elm_chimique = element_chimiques[(i, j)][1]
             else:
                 elm_chimique = ""
 
@@ -253,11 +255,6 @@ def dessine_tableau():
 
             screen.blit(text_surface, text_rect)
 
-
-            
-def presition_element():
-    pygame.draw.rect(screen,white,rectangle,)
-    pygame.draw.rect(screen,black, rectangle_1)
 
 def non_reactif(check_states):
     for i in range(18):
@@ -309,10 +306,10 @@ def propriete_inconnues(check_states):
                 if not check_states:
                     pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
 
-def lanthandies(check_states):
+def lanthanides(check_states):
     for i in range(18):
         for j in range(9):
-            if (i,j) in lanthandie:
+            if (i,j) in lanthanide:
                 if not check_states:
                     pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
 
@@ -320,17 +317,24 @@ def actinides(check_states):
     for i in range(18):
         for j in range(9):
             if (i,j) in actinide:
-                if check_states:
+                if not check_states:
+                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
+
+def gaz_nobles(check_states):
+    for i in range(18):
+        for j in range(9):
+            if (i,j) in gaz_noble:
+                if not check_states:
                     pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
 
 
 
 checked_pos = [(50, 900), (50, 930), (300, 900),
                (300, 930),(600,900),(600,930),(900,900),
-               (900,930), (1200,900)]
-check_states = [True, True, True, True,True, True, True, True, True]
+               (900,930), (1200,900),(1200,930)]
+check_states = [True, True, True, True,True, True, True, True, True, True]
 textes = ["non_reactifs", "metaux_alcalins", "metaux_alcalino","meteaux_de_transition", "metaloides", "meteaux_post_transition",
-          "propriete_inconnues", "lanthandies", "actinides"]
+          "propriete_inconnues", "lanthanides", "actinides", "gaz_nobles"]
 
 def coordonnees(souris_pos):
     x,y = souris_pos
@@ -341,13 +345,15 @@ def coordonnees(souris_pos):
 def informations_sup(souris_pos, dic):
     (i,j) = coordonnees(souris_pos)
     cle = (i,j)
-    for val in dic.values():
-        if cle in dic:
-            value = dic[cle]
-            pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-            print("Oui")
-        else:
-            print("Non")
+    if cle in dic:
+        value = dic[cle]
+        return True
+    else:
+        return False
+
+def affiche_rect():
+    pygame.draw.rect(screen,white,(250,160,600,200))
+    pygame.draw.rect(screen,black, (260,170,580,180))
 
 def dessine_checkbox(checked_pos, check_states):
     for i in range(len(checked_pos)):
@@ -383,19 +389,18 @@ def affiche_masque_element(check_states):
     if not check_states[6]:
         propriete_inconnues(False)
     if not check_states[7]:
-        lanthandies(False)
+        lanthanides(False)
     if not check_states[8]:
         actinides(False)
+    if not check_states[9]:
+        gaz_nobles(False)
 
 
 
-def case_inactive(i , j):
-    if (i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [0]) or (i in [2,3,4,5,6,7,8,9,10,11] and j in [0,1,2] or i in [0,1,2,17] and j in [7,8]):
-        return True
-    else:
-        return False
-
-
+screen.fill(black)
+dessine_tableau()
+dessine_checkbox(checked_pos, check_states)
+affiche_masque_element(check_states)
 run = True
 while run:
     for event in pygame.event.get():
@@ -407,15 +412,20 @@ while run:
                 (check_x, check_y) = checked_pos[i]
                 if check_x <= x <= check_x + 20 and check_y <= y <= check_y + 20:
                     check_states[i] = not check_states[i]
-        if event.type == pygame.MOUSEMOTION:
-            souris_pos = pygame.mouse.get_pos()
-            i, j = coordonnees(souris_pos)
-            informations_sup(souris_pos,element_chimiques)
-    screen.fill(black)
-    dessine_tableau()
-    presition_element()
-    dessine_checkbox(checked_pos, check_states)
-    affiche_masque_element(check_states)
+        if event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                souris_pos = pygame.mouse.get_pos()
+                if informations_sup(souris_pos,element_chimiques) == True:
+                    affiche_rect()
+                else:
+                    print("ntm")
+
+
+
+    #Proprieter Tableau
+
+
+    #affiche_rect()
     pygame.display.update()
 
 pygame.quit()
