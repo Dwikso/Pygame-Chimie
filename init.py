@@ -20,6 +20,13 @@ bleu_acier = (42, 65, 101)
 white = (255,255,255)
 marron_rougeatre = (97,59,40)
 
+#Search Bar
+search_font = pygame.font.Font(None, 32)
+search_text = ''
+
+search_rect = pygame.Rect(800, 20, 140, 32)
+search_color = pygame.Color('lightskyblue3')
+search_active = False
 
 #CheckBox
 checked = False
@@ -239,12 +246,7 @@ def dessine_tableau():
                 pygame.draw.rect(screen, marron_rougeatre, (10 + i * 100, 150 + j * 80, 60, 60))
 
             if (i, j) in element_chimiques:
-                num_chimique = element_chimiques[(i, j)][0]
-            else:
-                num_chimique = ""
-
-            if (i, j) in element_chimiques:
-                elm_chimique = element_chimiques[(i, j)][1]
+                elm_chimique = element_chimiques[(i, j)][0]
             else:
                 elm_chimique = ""
 
@@ -355,6 +357,7 @@ def affiche_rect():
     pygame.draw.rect(screen,white,(250,160,600,200))
     pygame.draw.rect(screen,black, (260,170,580,180))
 
+
 def dessine_checkbox(checked_pos, check_states):
     for i in range(len(checked_pos)):
         (x,y) = checked_pos[i]
@@ -397,10 +400,30 @@ def affiche_masque_element(check_states):
 
 
 
+def dessine_search_bar():
+    pygame.draw.rect(screen, search_color, search_rect)
+
+    text_surface = search_font.render(search_text, True, (255, 255, 255))
+    screen.blit(text_surface, (search_rect.x+5, search_rect.y+5))
+    search_rect.w = max(100, text_surface.get_width()+10)
+
+
+def recherche_text(texte):
+    for coords, details in element_chimiques.items():
+        if texte.lower() in [info.lower() for info in details]:
+            print("oui")
+            return True
+    return None
+
+def recherche_elm():
+    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
+
+
 screen.fill(black)
 dessine_tableau()
 dessine_checkbox(checked_pos, check_states)
 affiche_masque_element(check_states)
+
 run = True
 while run:
     for event in pygame.event.get():
@@ -417,13 +440,24 @@ while run:
                 souris_pos = pygame.mouse.get_pos()
                 if informations_sup(souris_pos,element_chimiques) == True:
                     affiche_rect()
-                else:
-                    print("ntm")
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if search_rect.collidepoint(event.pos):
+                search_active = True
+            else:
+                search_active = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                if not recherche_text(search_text):
+                    recherche_elm()
+            if event.key == pygame.K_BACKSPACE:
+                search_text = search_text[:-1]
+            else:
+                search_text += event.unicode
 
 
     #Proprieter Tableau
-
+    dessine_search_bar()
 
     #affiche_rect()
     pygame.display.update()
