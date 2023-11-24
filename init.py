@@ -6,7 +6,8 @@ width = 1900
 height = 1000
 screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption('Tableau Périodique')
-font = pygame.font.Font(None, 36)
+font_element = pygame.font.Font(None, 36)
+font_poids = pygame.font.Font(None, 16)
 
 bleu_nuit = (36, 77, 87)
 bourgogne = (98, 46, 57)
@@ -100,124 +101,124 @@ gaz_noble = {
 }
 
 element_chimiques = {
-    (0, 0): ["H", "1", "Hydrogène", "1.0078", "1s¹"],
-    (17, 0): ["He", "2", "Hélium", "4.0026", "1s²"],
-    (0, 1): ["Li", "3", "Lithium", "6.941", "[He] 2s¹"],
-    (1, 1): ["Be", "4", "Béryllium", "9.0122", "[He] 2s²"],
-    (12, 1): ["B", "5", "Bore", "10.81", "[He] 2s² 2p¹"],
-    (13, 1): ["C", "6", "Carbone", "12.011", "[He] 2s² 2p²"],
-    (14, 1): ["N", "7", "Azote", "14.007", "[He] 2s² 2p³"],
-    (15, 1): ["O", "8", "Oxygène", "15.999", "[He] 2s² 2p⁴"],
-    (16, 1): ["F", "9", "Fluor", "18.998", "[He] 2s² 2p⁵"],
-    (17, 1): ["Ne", "10", "Néon", "20.180", "[He] 2s² 2p⁶"],
-    (0, 2): ["Na", "11", "Sodium", "22.990", "[Ne] 3s¹"],
-    (1, 2): ["Mg", "12", "Magnésium", "24.305", "[Ne] 3s²"],
-    (12, 2): ["Al", "13", "Aluminium", "26.982", "[Ne] 3s² 3p¹"],
-    (13, 2): ["Si", "14", "Silicium", "28.085", "[Ne] 3s² 3p²"],
-    (14, 2): ["P", "15", "Phosphore", "30.974", "[Ne] 3s² 3p³"],
-    (15, 2): ["S", "16", "Soufre", "32.06", "[Ne] 3s² 3p⁴"],
-    (16, 2): ["Cl", "17", "Chlore", "35.45", "[Ne] 3s² 3p⁵"],
-    (17, 2): ["Ar", "18", "Argon", "39.948", "[Ne] 3s² 3p⁶"],
-    (0, 3): ["K", "19", "Potassium", "39.098", "[Ar] 4s¹"],
-    (1, 3): ["Ca", "20", "Calcium", "40.078", "[Ar] 4s²"],
-    (2, 3): ["Sc", "21", "Scandium", "44.956", "[Ar] 3d¹ 4s²"],
-    (3, 3): ["Ti", "22", "Titane", "47.867", "[Ar] 3d² 4s²"],
-    (4, 3): ["V", "23", "Vanadium", "50.942", "[Ar] 3d³ 4s²"],
-    (5, 3): ["Cr", "24", "Chrome", "51.996", "[Ar] 3d⁴ 4s²"],
-    (6, 3): ["Mn", "25", "Manganèse", "54.938", "[Ar] 3d⁵ 4s²"],
-    (7, 3): ["Fe", "26", "Fer", "55.845", "[Ar] 3d⁶ 4s²"],
-    (8, 3): ["Co", "27", "Cobalt", "58.933", "[Ar] 3d⁷ 4s²"],
-    (9, 3): ["Ni", "28", "Nickel", "58.693", "[Ar] 3d⁸ 4s²"],
-    (10, 3): ["Cu", "29", "Cuivre", "63.546", "[Ar] 3d⁹ 4s²"],
-    (11, 3): ["Zn", "30", "Zinc", "65.38", "[Ar] 3d¹⁰ 4s²"],
-    (12, 3): ["Ga", "31", "Gallium", "69.723", "[Ar] 3d¹⁰ 4s² 4p¹"],
-    (13, 3): ["Ge", "32", "Germanium", "72.630", "[Ar] 3d¹⁰ 4s² 4p²"],
-    (14, 3): ["As", "33", "Arsenic", "74.922", "[Ar] 3d¹⁰ 4s² 4p³"],
-    (15, 3): ["Se", "34", "Sélénium", "78.971", "[Ar] 3d¹⁰ 4s² 4p⁴"],
-    (16, 3): ["Br", "35", "Brome", "79.904", "[Ar] 3d¹⁰ 4s² 4p⁵"],
-    (17, 3): ["Kr", "36", "Krypton", "83.798", "[Ar] 3d¹⁰ 4s² 4p⁶"],
-    (0, 4): ["Rb", "37", "Rubidium", "85.468", "[Kr] 5s¹"],
-    (1, 4): ["Sr", "38", "Strontium", "87.62", "[Kr] 5s²"],
-    (2, 4): ["Y", "39", "Yttrium", "88.906", "[Kr] 4d¹ 5s²"],
-    (3, 4): ["Zr", "40", "Zirconium", "91.224", "[Kr] 4d² 5s²"],
-    (4, 4): ["Nb", "41", "Niobium", "92.906", "[Kr] 4d³ 5s²"],
-    (5, 4): ["Mo", "42", "Molybdène", "95.95", "[Kr] 4d⁴ 5s²"],
-    (6, 4): ["Tc", "43", "Technétium", "98", "[Kr] 4d⁵ 5s²"],
-    (7, 4): ["Ru", "44", "Ruthénium", "101.07", "[Kr] 4d⁶ 5s²"],
-    (8, 4): ["Rh", "45", "Rhodium", "102.91", "[Kr] 4d⁷ 5s²"],
-    (9, 4): ["Pd", "46", "Palladium", "106.42", "[Kr] 4d⁸ 5s²"],
-    (10, 4): ["Ag", "47", "Argent", "107.87", "[Kr] 4d⁹ 5s²"],
-    (11, 4): ["Cd", "48", "Cadmium", "112.41", "[Kr] 4d¹⁰ 5s²"],
-    (12, 4): ["In", "49", "Indium", "114.82", "[Kr] 4d¹⁰ 5s² 5p¹"],
-    (13, 4): ["Sn", "50", "Étain", "118.71", "[Kr] 4d¹⁰ 5s² 5p²"],
-    (14, 4): ["Sb", "51", "Antimoine", "121.76", "[Kr] 4d¹⁰ 5s² 5p³"],
-    (15, 4): ["Te", "52", "Tellure", "127.60", "[Kr] 4d¹⁰ 5s² 5p⁴"],
-    (16, 4): ["I", "53", "Iode", "126.90", "[Kr] 4d¹⁰ 5s² 5p⁵"],
-    (17, 4): ["Xe", "54", "Xénon", "131.29", "[Kr] 4d¹⁰ 5s² 5p⁶"],
-    (0, 5): ["Cs", "55", "Césium", "132.91", "[Xe] 6s¹"],
-    (1, 5): ["Ba", "56", "Baryum", "137.33", "[Xe] 6s²"],
-    (2, 7): ["La", "57", "Lanthane", "138.91", "[Xe] 5d¹ 6s²"],
-    (3, 5): ["Hf", "72", "Hafnium", "178.49", "[Xe] 4f¹⁴ 5d² 6s²"],
-    (4, 5): ["Ta", "73", "Tantale", "180.95", "[Xe] 4f¹⁴ 5d³ 6s²"],
-    (5, 5): ["W", "74", "Tungstène", "183.84", "[Xe] 4f¹⁴ 5d⁴ 6s²"],
-    (6, 5): ["Re", "75", "Rhénium", "186.21", "[Xe] 4f¹⁴ 5d⁵ 6s²"],
-    (7, 5): ["Os", "76", "Osmium", "190.23", "[Xe] 4f¹⁴ 5d⁶ 6s²"],
-    (8, 5): ["Ir", "77", "Iridium", "192.22", "[Xe] 4f¹⁴ 5d⁷ 6s²"],
-    (9, 5): ["Pt", "78", "Platine", "195.08", "[Xe] 4f¹⁴ 5d⁹ 6s¹"],
-    (10, 5): ["Au", "79", "Or", "196.97", "[Xe] 4f¹⁴ 5d¹⁰ 6s¹"],
-    (11, 5): ["Hg", "80", "Mercure", "200.59", "[Xe] 4f¹⁴ 5d¹⁰ 6s²"],
-    (12, 5): ["Ti", "81", "Thallium", "204.38", "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹"],
-    (13, 5): ["Pb", "82", "Plomb", "207.2", "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²"],
-    (14, 5): ["Bi", "83", "Bismuth", "208.98", "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³"],
-    (15, 5): ["Po", "84", "Polonium", "209", "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴"],
-    (16, 5): ["At", "85", "Astate", "210", "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵"],
-    (17, 5): ["Rn", "86", "Radon", "222", "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶"],
-    (0, 6): ["Fr", "87", "Francium", "223", "[Rn] 7s¹"],
-    (1, 6): ["Ra", "88", "Radium", "226", "[Rn] 7s²"],
-    (2, 8): ["Ac", "89", "Actinium", "227", "[Rn] 6d¹ 7s²"],
-    (3, 6): ["Rf", "104", "Rutherfordium", "267", "[Rn] 5f¹⁴ 6d² 7s²"],
-    (4, 6): ["Db", "105", "Dubnium", "270", "[Rn] 5f¹⁴ 6d³ 7s²"],
-    (5, 6): ["Sg", "106", "Seaborgium", "271", "[Rn] 5f¹⁴ 6d⁴ 7s²"],
-    (6, 6): ["Bh", "107", "Bohrium", "270", "[Rn] 5f¹⁴ 6d⁵ 7s²"],
-    (7, 6): ["Hs", "108", "Hassium", "277", "[Rn] 5f¹⁴ 6d⁶ 7s²"],
-    (8, 6): ["Mt", "109", "Meitnerium", "276", "[Rn] 5f¹⁴ 6d⁷ 7s²"],
-    (9, 6): ["Ds", "110", "Darmstadtium", "281", "[Rn] 5f¹⁴ 6d⁸ 7s²"],
-    (10, 6): ["Rg", "111", "Roentgenium", "280", "[Rn] 5f¹⁴ 6d¹⁰ 7s¹"],
-    (11, 6): ["Cn", "112", "Copernicium", "285", "[Rn] 5f¹⁴ 6d¹⁰ 7s²"],
-    (12, 6): ["Nh", "113", "Nihonium", "284", "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹"],
-    (13, 6): ["Fl", "114", "Flerovium", "289", "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²"],
-    (14, 6): ["Mc", "115", "Moscovium", "288", "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³"],
-    (15, 6): ["Lv", "116", "Livermorium", "293", "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴"],
-    (16, 6): ["Ts", "117", "Tennessine", "294", "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵"],
-    (17, 6): ["Og", "118", "Oganesson", "294", "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶"],
-    (3, 7): ["Ce", "58", "Cérium", "140.12", "[Xe] 4f¹ 5d¹ 6s²"],
-    (4, 7): ["Pr", "59", "Praséodyme", "140.91", "[Xe] 4f³ 6s²"],
-    (5, 7): ["Nd", "60", "Néodyme", "144.24", "[Xe] 4f⁴ 6s²"],
-    (6, 7): ["Pm", "61", "Prométhium", "145", "[Xe] 4f⁵ 6s²"],
-    (7, 7): ["Sm", "62", "Samarium", "150.36", "[Xe] 4f⁶ 6s²"],
-    (8, 7): ["Eu", "63", "Europium", "151.96", "[Xe] 4f⁷ 6s²"],
-    (9, 7): ["Gd", "64", "Gadolinium", "157.25", "[Xe] 4f⁷ 5d¹ 6s²"],
-    (10, 7): ["Tb", "65", "Terbium", "158.93", "[Xe] 4f⁹ 6s²"],
-    (11, 7): ["Dy", "66", "Dysprosium", "162.50", "[Xe] 4f¹⁰ 6s²"],
-    (12, 7): ["Ho", "67", "Holmium", "164.93", "[Xe] 4f¹¹ 6s²"],
-    (13, 7): ["Er", "68", "Erbium", "167.26", "[Xe] 4f¹² 6s²"],
-    (14, 7): ["Tm", "69", "Thulium", "168.93", "[Xe] 4f¹³ 6s²"],
-    (15, 7): ["Yb", "70", "Ytterbium", "173.04", "[Xe] 4f¹⁴ 6s²"],
-    (16, 7): ["Lu", "71", "Lutécium", "174.97", "[Xe] 4f¹⁴ 5d¹ 6s²"],
-    (3, 8): ["Th", "90", "Thorium", "232.04", "[Rn] 6d² 7s²"],
-    (4, 8): ["Pa", "91", "Protactinium", "231.04", "[Rn] 5f² 6d¹ 7s²"],
-    (5, 8): ["U", "92", "Uranium", "238.03", "[Rn] 5f³ 6d¹ 7s²"],
-    (6, 8): ["Np", "93", "Neptunium", "237", "[Rn] 5f⁴ 6d¹ 7s²"],
-    (7, 8): ["Pu", "94", "Plutonium", "244", "[Rn] 5f⁵ 6d¹ 7s²"],
-    (8, 8): ["Am", "95", "Américium", "243", "[Rn] 5f⁶ 6d¹ 7s²"],
-    (9, 8): ["Cm", "96", "Curium", "247", "[Rn] 5f⁷ 6d¹ 7s²"],
-    (10, 8): ["Bk", "97", "Berkélium", "247", "[Rn] 5f⁹ 6d¹ 7s²"],
-    (11, 8): ["Cf", "98", "Californium", "251", "[Rn] 5f¹⁰ 6d¹ 7s²"],
-    (12, 8): ["Es", "99", "Einsteinium", "252", "[Rn] 5f¹¹ 6d¹ 7s²"],
-    (13, 8): ["Fm", "100", "Fermium", "257", "[Rn] 5f¹² 6d¹ 7s²"],
-    (14, 8): ["Md", "101", "Mendélévium", "258", "[Rn] 5f¹³ 6d¹ 7s²"],
-    (15, 8): ["No", "102", "Nobélium", "259", "[Rn] 5f¹⁴ 6d¹ 7s²"],
-    (16, 8): ["Lr", "103", "Lawrencium", "262", "[Rn] 5f¹⁴ 6d¹ 7s² 7p¹"],
+    (0, 0): ["H", "1", "Hydrogène", "1.0078", "1s1"],
+    (17, 0): ["He", "2", "Hélium", "4.0026", "1s2"],
+    (0, 1): ["Li", "3", "Lithium", "6.941", "[He] 2s1"],
+    (1, 1): ["Be", "4", "Béryllium", "9.0122", "[He] 2s1"],
+    (12, 1): ["B", "5", "Bore", "10.81", "[He] 2s2 2p1"],
+    (13, 1): ["C", "6", "Carbone", "12.011", "[He] 2s2 2p2"],
+    (14, 1): ["N", "7", "Azote", "14.007", "[He] 2s2 2p3"],
+    (15, 1): ["O", "8", "Oxygène", "15.999", "[He] 2s2 2p4"],
+    (16, 1): ["F", "9", "Fluor", "18.998", "[He] 2s2 2p5"],
+    (17, 1): ["Ne", "10", "Néon", "20.180", "[He] 2s2 2p6"],
+    (0, 2): ["Na", "11", "Sodium", "22.990", "[Ne] 3s1"],
+    (1, 2): ["Mg", "12", "Magnésium", "24.305", "[Ne] 3s2"],
+    (12, 2): ["Al", "13", "Aluminium", "26.982", "[Ne] 3s2 3p1"],
+    (13, 2): ["Si", "14", "Silicium", "28.085", "[Ne] 3s2 3p2"],
+    (14, 2): ["P", "15", "Phosphore", "30.974", "[Ne] 3s2 3p3"],
+    (15, 2): ["S", "16", "Soufre", "32.06", "[Ne] 3s2 3p4"],
+    (16, 2): ["Cl", "17", "Chlore", "35.45", "[Ne] 3s2 3p5"],
+    (17, 2): ["Ar", "18", "Argon", "39.948", "[Ne] 3s2 3p6"],
+    (0, 3): ["K", "19", "Potassium", "39.098", "[Ar] 4s1"],
+    (1, 3): ["Ca", "20", "Calcium", "40.078", "[Ar] 4s2"],
+    (2, 3): ["Sc", "21", "Scandium", "44.956", "[Ar] 3d1 4s2"],
+    (3, 3): ["Ti", "22", "Titane", "47.867", "[Ar] 3d2 4s2"],
+    (4, 3): ["V", "23", "Vanadium", "50.942", "[Ar] 3d3 4s2"],
+    (5, 3): ["Cr", "24", "Chrome", "51.996", "[Ar] 3d4 4s2"],
+    (6, 3): ["Mn", "25", "Manganèse", "54.938", "[Ar] 3d5 4s2"],
+    (7, 3): ["Fe", "26", "Fer", "55.845", "[Ar] 3d6 4s2"],
+    (8, 3): ["Co", "27", "Cobalt", "58.933", "[Ar] 3d7 4s2"],
+    (9, 3): ["Ni", "28", "Nickel", "58.693", "[Ar] 3d8 4s2"],
+    (10, 3): ["Cu", "29", "Cuivre", "63.546", "[Ar] 3d9 4s2"],
+    (11, 3): ["Zn", "30", "Zinc", "65.38", "[Ar] 3d10 4s2"],
+    (12, 3): ["Ga", "31", "Gallium", "69.723", "[Ar] 3d10 4s2 4p1"],
+    (13, 3): ["Ge", "32", "Germanium", "72.630", "[Ar] 3d10 4s2 4p2"],
+    (14, 3): ["As", "33", "Arsenic", "74.922", "[Ar] 3d10 4s2 4p3"],
+    (15, 3): ["Se", "34", "Sélénium", "78.971", "[Ar] 3d10 4s2 4p4"],
+    (16, 3): ["Br", "35", "Brome", "79.904", "[Ar] 3d10 4s2 4p5"],
+    (17, 3): ["Kr", "36", "Krypton", "83.798", "[Ar] 3d10 4s2 4p6"],
+    (0, 4): ["Rb", "37", "Rubidium", "85.468", "[Kr] 5s1"],
+    (1, 4): ["Sr", "38", "Strontium", "87.62", "[Kr] 5s2"],
+    (2, 4): ["Y", "39", "Yttrium", "88.906", "[Kr] 4d1 5s2"],
+    (3, 4): ["Zr", "40", "Zirconium", "91.224", "[Kr] 4d2 5s2"],
+    (4, 4): ["Nb", "41", "Niobium", "92.906", "[Kr] 4d3 5s2"],
+    (5, 4): ["Mo", "42", "Molybdène", "95.95", "[Kr] 4d4 5s2"],
+    (6, 4): ["Tc", "43", "Technétium", "98", "[Kr] 4d5 5s2"],
+    (7, 4): ["Ru", "44", "Ruthénium", "101.07", "[Kr] 4d6 5s2"],
+    (8, 4): ["Rh", "45", "Rhodium", "102.91", "[Kr] 4d7 5s2"],
+    (9, 4): ["Pd", "46", "Palladium", "106.42", "[Kr] 4d8 5s2"],
+    (10, 4): ["Ag", "47", "Argent", "107.87", "[Kr] 4d9 5s2"],
+    (11, 4): ["Cd", "48", "Cadmium", "112.41", "[Kr] 4d10 5s2"],
+    (12, 4): ["In", "49", "Indium", "114.82", "[Kr] 4d10 5s2 5p1"],
+    (13, 4): ["Sn", "50", "Étain", "118.71", "[Kr] 4d10 5s2 5p2"],
+    (14, 4): ["Sb", "51", "Antimoine", "121.76", "[Kr] 4d10 5s2 5p3"],
+    (15, 4): ["Te", "52", "Tellure", "127.60", "[Kr] 4d10 5s2 5p4"],
+    (16, 4): ["I", "53", "Iode", "126.90", "[Kr] 4d10 5s2 5p5"],
+    (17, 4): ["Xe", "54", "Xénon", "131.29", "[Kr] 4d10 5s2 5p6"],
+    (0, 5): ["Cs", "55", "Césium", "132.91", "[Xe] 6s1"],
+    (1, 5): ["Ba", "56", "Baryum", "137.33", "[Xe] 6s2"],
+    (2, 7): ["La", "57", "Lanthane", "138.91", "[Xe] 5d1 6s2"],
+    (3, 5): ["Hf", "72", "Hafnium", "178.49", "[Xe] 4f14 5d2 6s2"],
+    (4, 5): ["Ta", "73", "Tantale", "180.95", "[Xe] 4f14 5d3 6s2"],
+    (5, 5): ["W", "74", "Tungstène", "183.84", "[Xe] 4f14 5d4 6s2"],
+    (6, 5): ["Re", "75", "Rhénium", "186.21", "[Xe] 4f14 5d5 6s2"],
+    (7, 5): ["Os", "76", "Osmium", "190.23", "[Xe] 4f14 5d6 6s2"],
+    (8, 5): ["Ir", "77", "Iridium", "192.22", "[Xe] 4f14 5d7 6s2"],
+    (9, 5): ["Pt", "78", "Platine", "195.08", "[Xe] 4f14 5d9 6s1"],
+    (10, 5): ["Au", "79", "Or", "196.97", "[Xe] 4f14 5d10 6s1"],
+    (11, 5): ["Hg", "80", "Mercure", "200.59", "[Xe] 4f14 5d10 6s2"],
+    (12, 5): ["Ti", "81", "Thallium", "204.38", "[Xe] 4f14 5d10 6s2 6p1"],
+    (13, 5): ["Pb", "82", "Plomb", "207.2", "[Xe] 4f14 5d10 6s2 6p2"],
+    (14, 5): ["Bi", "83", "Bismuth", "208.98", "[Xe] 4f14 5d10 6s2 6p3"],
+    (15, 5): ["Po", "84", "Polonium", "209", "[Xe] 4f14 5d10 6s2 6p4"],
+    (16, 5): ["At", "85", "Astate", "210", "[Xe] 4f14 5d10 6s2 6p5"],
+    (17, 5): ["Rn", "86", "Radon", "222", "[Xe] 4f14 5d10 6s2 6p⁶6"],
+    (0, 6): ["Fr", "87", "Francium", "223", "[Rn] 7s1"],
+    (1, 6): ["Ra", "88", "Radium", "226", "[Rn] 7s2"],
+    (2, 8): ["Ac", "89", "Actinium", "227", "[Rn] 6d1 7s2"],
+    (3, 6): ["Rf", "104", "Rutherfordium", "267", "[Rn] 5f14 6d2 7s2"],
+    (4, 6): ["Db", "105", "Dubnium", "270", "[Rn] 5f14 6d3 7s2"],
+    (5, 6): ["Sg", "106", "Seaborgium", "271", "[Rn] 5f14 6d4 7s2"],
+    (6, 6): ["Bh", "107", "Bohrium", "270", "[Rn] 5f14 6d5 7s2"],
+    (7, 6): ["Hs", "108", "Hassium", "277", "[Rn] 5f14 6d6 7s2"],
+    (8, 6): ["Mt", "109", "Meitnerium", "276", "[Rn] 5f14 6d7 7s2"],
+    (9, 6): ["Ds", "110", "Darmstadtium", "281", "[Rn] 5f14 6d8 7s2"],
+    (10, 6): ["Rg", "111", "Roentgenium", "280", "[Rn] 5f14 6d10 7s1"],
+    (11, 6): ["Cn", "112", "Copernicium", "285", "[Rn] 5f14 6d10 7s2"],
+    (12, 6): ["Nh", "113", "Nihonium", "284", "[Rn] 5f14 6d10 7s2 7p1"],
+    (13, 6): ["Fl", "114", "Flerovium", "289", "[Rn] 5f14 6d10 7s2 7p2"],
+    (14, 6): ["Mc", "115", "Moscovium", "288", "[Rn] 5f14 6d10 7s2 7p3"],
+    (15, 6): ["Lv", "116", "Livermorium", "293", "[Rn] 5f14 6d10 7s2 7p4"],
+    (16, 6): ["Ts", "117", "Tennessine", "294", "[Rn] 5f14 6d10 7s2 7p5"],
+    (17, 6): ["Og", "118", "Oganesson", "294", "[Rn] 5f14 6d10 7s2 7p⁶"],
+    (3, 7): ["Ce", "58", "Cérium", "140.12", "[Xe] 4f1 5d1 6s2"],
+    (4, 7): ["Pr", "59", "Praséodyme", "140.91", "[Xe] 4f3 6s2"],
+    (5, 7): ["Nd", "60", "Néodyme", "144.24", "[Xe] 4f4 6s2"],
+    (6, 7): ["Pm", "61", "Prométhium", "145", "[Xe] 4f5 6s2"],
+    (7, 7): ["Sm", "62", "Samarium", "150.36", "[Xe] 4f6 6s2"],
+    (8, 7): ["Eu", "63", "Europium", "151.96", "[Xe] 4f7 6s2"],
+    (9, 7): ["Gd", "64", "Gadolinium", "157.25", "[Xe] 4f7 5d1 6s2"],
+    (10, 7): ["Tb", "65", "Terbium", "158.93", "[Xe] 4f9 6s2"],
+    (11, 7): ["Dy", "66", "Dysprosium", "162.50", "[Xe] 4f10 6s2"],
+    (12, 7): ["Ho", "67", "Holmium", "164.93", "[Xe] 4f14 6s2"],
+    (13, 7): ["Er", "68", "Erbium", "167.26", "[Xe] 4f12 6s²"],
+    (14, 7): ["Tm", "69", "Thulium", "168.93", "[Xe] 4f13 6s2"],
+    (15, 7): ["Yb", "70", "Ytterbium", "173.04", "[Xe] 4f14 6s2"],
+    (16, 7): ["Lu", "71", "Lutécium", "174.97", "[Xe] 4f14 5d1 6s2"],
+    (3, 8): ["Th", "90", "Thorium", "232.04", "[Rn] 6d2 7s2"],
+    (4, 8): ["Pa", "91", "Protactinium", "231.04", "[Rn] 5f2 6d1 7s2"],
+    (5, 8): ["U", "92", "Uranium", "238.03", "[Rn] 5f3 6d1 7s2"],
+    (6, 8): ["Np", "93", "Neptunium", "237", "[Rn] 5f4 6d1 7s2"],
+    (7, 8): ["Pu", "94", "Plutonium", "244", "[Rn] 5f5 6d1 7s2"],
+    (8, 8): ["Am", "95", "Américium", "243", "[Rn] 5f6 6d1 7s2"],
+    (9, 8): ["Cm", "96", "Curium", "247", "[Rn] 5f7 6d1 7s2"],
+    (10, 8): ["Bk", "97", "Berkélium", "247", "[Rn] 5f9 6d1 7s2"],
+    (11, 8): ["Cf", "98", "Californium", "251", "[Rn] 5f10 6d1 7s2"],
+    (12, 8): ["Es", "99", "Einsteinium", "252", "[Rn] 5f11 6d1 7s2"],
+    (13, 8): ["Fm", "100", "Fermium", "257", "[Rn] 5f12 6d1 7s2"],
+    (14, 8): ["Md", "101", "Mendélévium", "258", "[Rn] 5f12 6d1 7s1"],
+    (15, 8): ["No", "102", "Nobélium", "259", "[Rn] 5f14 6d1 7s2"],
+    (16, 8): ["Lr", "103", "Lawrencium", "262", "[Rn] 5f14 6d1 7s2 7p1"],
 }
 
 
@@ -249,17 +250,33 @@ def dessine_tableau():
             else:
                 pygame.draw.rect(screen, marron_rougeatre, (10 + i * 100, 150 + j * 80, 60, 60))
 
+
+            #Afiche la lettre
             if (i, j) in element_chimiques:
                 elm_chimique = element_chimiques[(i, j)][0]
             else:
                 elm_chimique = ""
 
-            text_surface = font.render(elm_chimique, True, (255, 255, 255))
+            text_surface = font_element.render(elm_chimique, True, (255, 255, 255))
 
             text_rect = text_surface.get_rect()
             text_rect.center = (10 + i * 100 + 30, 150 + j * 80 + 30)
 
             screen.blit(text_surface, text_rect)
+
+            #Affiche le poids
+            if (i, j) in element_chimiques:
+                elm_chimique = element_chimiques[(i, j)][3]
+            else:
+                elm_chimique = ""
+
+            text_surface = font_poids.render(elm_chimique, True, (255, 255, 255))
+
+            text_rect = text_surface.get_rect()
+            text_rect.center = (-3 + i * 100 + 30, 173 + j * 80 + 30)
+
+            screen.blit(text_surface, text_rect)
+
 
 
 def non_reactif(check_states):
@@ -444,7 +461,7 @@ def recherche_elm(texte):
 
     for coords in resultats_recherche:
         pygame.draw.rect(screen, rouge_fonce, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
-        text_surface = font.render(element_chimiques[coords][0], True, white)
+        text_surface = font_element.render(element_chimiques[coords][0], True, white)
         text_rect = text_surface.get_rect()
         text_rect.center = (10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)
         screen.blit(text_surface, text_rect)
@@ -452,6 +469,7 @@ def recherche_elm(texte):
 
 
 screen.fill(black)
+dessine_checkbox(checked_pos, check_states)
 dessine_tableau()
 
 
@@ -487,13 +505,13 @@ while run:
 
     #Proprieter Tableau
     dessine_search_bar()
-    dessine_checkbox(checked_pos, check_states)
-    affiche_masque_element(check_states)
+
 
 
 
     #affiche_rect()
     pygame.display.update()
+    affiche_masque_element(check_states)
 
 pygame.quit()
 exit()
