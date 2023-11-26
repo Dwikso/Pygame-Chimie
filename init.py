@@ -225,7 +225,6 @@ element_chimiques = {
 
 
 def dessine_tableau():
-
     for i in range(18):
         for j in range(9):
             if i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [0]:
@@ -397,12 +396,13 @@ def affiche_rect(infos):
 def dessine_checkbox(checked_pos, check_states):
     for i in range(len(checked_pos)):
         (x,y) = checked_pos[i]
-        pygame.draw.rect(screen, (0,255,0),(x,y,20,20))
-
         if check_states[i]:
             pygame.draw.rect(screen, (0,255,0),(x,y,20,20))
+            affiche_masque_element(check_states)
         else:
             pygame.draw.rect(screen, (255,0,0),(x,y,20,20))
+
+
 
 
         font = pygame.font.Font(None, 24)
@@ -444,34 +444,38 @@ def dessine_search_bar():
     search_rect.w = max(100, text_surface.get_width()+10)
     active = False
 
-
 def recherche_elm(texte):
     resultats_recherche = []
+
 
     for coords, details in element_chimiques.items():
         if texte.lower() in [info.lower() for info in details]:
             resultats_recherche.append(coords)
+
+    for coords, details in element_chimiques.items():
+        if coords in resultats_recherche:
+            pygame.draw.rect(screen, rouge_fonce, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
+            text_surface = font_element.render(element_chimiques[coords][0], True, white)
+            text_surface_2 = font_poids.render(element_chimiques[coords][3], True, white)
+            text_rect = text_surface.get_rect()
+            text_rect_2 = text_surface_2.get_rect()
+            text_rect.center = (10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)
+            text_rect_2.center = (-3 + coords[0] * 100 + 30, 173 + coords[1] * 80 + 30)
+            screen.blit(text_surface, text_rect)
+            screen.blit(text_surface_2, text_rect_2)
         else:
+            if screen.get_at((10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)) == black:
+                # Si la case est noire, ne pas exécuter le reste du code
+                continue
             pygame.draw.rect(screen, black, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
 
-    for coords in resultats_recherche:
-        pygame.draw.rect(screen, rouge_fonce, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
-        text_surface = font_element.render(element_chimiques[coords][0], True, white)
-        text_surface_2 = font_poids.render(element_chimiques[coords][3], True, white)
-        text_rect = text_surface.get_rect()
-        text_rect_2 = text_surface_2.get_rect()
-        text_rect.center = (10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)
-        text_rect_2.center = (-3 + coords[0] * 100 + 30, 173 + coords[1] * 80 + 30)
-        screen.blit(text_surface, text_rect)
-        screen.blit(text_surface_2,text_rect_2)
 
 
 
 screen.fill(black)
-
 dessine_checkbox(checked_pos, check_states)
-
 dessine_tableau()
+
 
 run = True
 while run:
@@ -485,15 +489,15 @@ while run:
                 if check_x <= x <= check_x + 20 and check_y <= y <= check_y + 20:
                     check_states[i] = not check_states[i]
 
-        if event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:
-                souris_pos = pygame.mouse.get_pos()
-                infos = informations_sup(souris_pos,element_chimiques)
-                if infos:
-                    affiche_rect(infos)
+        if event.type == pygame.MOUSEMOTION:
+            souris_pos = pygame.mouse.get_pos()
+            infos = informations_sup(souris_pos, element_chimiques)
+            coords = ((souris_pos[0] - 10) // 100, (souris_pos[1] - 150) // 80)
+            if infos and screen.get_at((10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)) != black:
+                affiche_rect(infos)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            souris_x,souris_y = event.pos
+            souris_x, souris_y = event.pos
             active = search_rect.x < souris_x + search_rect.width and \
                      search_rect.y < souris_y + search_rect.height
             if active:
@@ -502,18 +506,19 @@ while run:
             if active:
                 if event.key == pygame.K_RETURN:
                     if search_text == "":
-                        print("Entrez un valeur")
+                        print("Entrez une valeur")
                     else:
                         recherche_elm(search_text)
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
                     search_text = search_text[:-1]
-                elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9: # Vérifie si la touche pressée est une lettre de l'alphabet (a à z) ou un chiffre (0 à 9)
+                elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9:
                     search_text += event.unicode
+
+
 
 
     #Proprieter Tableau
     dessine_search_bar()
-    affiche_masque_element(check_states)
 
 
 
