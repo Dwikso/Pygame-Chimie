@@ -30,7 +30,7 @@ search_text = 'Rechercher un éléments'
 
 search_rect = pygame.Rect(800, 20, 140, 32)
 search_color = pygame.Color('white')
-search_active = False
+active = False
 
 #CheckBox
 checked = False
@@ -201,7 +201,7 @@ element_chimiques = {
     (10, 7): ["Tb", "65", "Terbium", "158.93", "[Xe] 4f9 6s2"],
     (11, 7): ["Dy", "66", "Dysprosium", "162.50", "[Xe] 4f10 6s2"],
     (12, 7): ["Ho", "67", "Holmium", "164.93", "[Xe] 4f14 6s2"],
-    (13, 7): ["Er", "68", "Erbium", "167.26", "[Xe] 4f12 6s²"],
+    (13, 7): ["Er", "68", "Erbium", "167.26", "[Xe] 4f12 6s2"],
     (14, 7): ["Tm", "69", "Thulium", "168.93", "[Xe] 4f13 6s2"],
     (15, 7): ["Yb", "70", "Ytterbium", "173.04", "[Xe] 4f14 6s2"],
     (16, 7): ["Lu", "71", "Lutécium", "174.97", "[Xe] 4f14 5d1 6s2"],
@@ -227,12 +227,12 @@ element_chimiques = {
 def dessine_tableau():
     for i in range(18):
         for j in range(9):
-            if i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [0]:
-                pygame.draw.rect(screen, black,(10 + i * 100, 150 + j * 80, 60, 60))
-            elif i in [0] and j in [0] or i in [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [7] :
+            #if i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [0]:
+                #pygame.draw.rect(screen, black,(10 + i * 100, 150 + j * 80, 60, 60))
+            if i in [0] and j in [0] or i in [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [7] :
                 pygame.draw.rect(screen, bleu_cobalt, (10 + i * 100, 150 + j * 80, 60, 60))
-            elif i in [2,3,4,5,6,7,8,9,10,11] and j in [0,1,2] or i in [0,1,17] and j in [7,8]:
-                pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
+            #elif i in [2,3,4,5,6,7,8,9,10,11] and j in [0,1,2] or i in [0,1,17] and j in [7,8]:
+                #pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [13,14,15,16] and j in [1] or i in [14,15,16] and j in [2] or i in [15,16] and j in [3] or i in [16] and j in [4]:
                 pygame.draw.rect(screen, bleu_acier, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [0] and j in [1,2,3,4,5,6]:
@@ -241,13 +241,15 @@ def dessine_tableau():
                 pygame.draw.rect(screen, bourgogne, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [2,3,4,5,6,7,8,9,10,11] and j in [3,4] or  i in [3,4,5,6,7,8,9,10,11] and j in [5] or  i in [3,4,5,6,7] and j in [6]:
                 pygame.draw.rect(screen, purple, (10 + i * 100, 150 + j * 80, 60, 60))
-            elif i in [2] and j in [5,6]:
-                pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
+            #elif i in [2] and j in [5,6]:
+                #pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [7,8,9,10,11,12,13,14,15,16,17] and j in [6]:
                 pygame.draw.rect(screen, gris_ardois, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [12] and j in [2,3,4,5] or i in [13] and j in [4,5] or i in [13,14,15,16] and j in [5]:
                 pygame.draw.rect(screen, dark_green, (10 + i * 100, 150 + j * 80, 60, 60))
-            else:
+            elif i in [12] and j in [1] or i in [13] and j in [2] or i in [13,14] and j in [3] or i in [14,15] and j in [4]:
+                pygame.draw.rect(screen, marron_cafe, (10 + i * 100, 150 + j * 80, 60, 60))
+            elif i in [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [8] :
                 pygame.draw.rect(screen, marron_rougeatre, (10 + i * 100, 150 + j * 80, 60, 60))
 
 
@@ -395,21 +397,16 @@ def affiche_rect(infos):
 
 def dessine_checkbox(checked_pos, check_states):
     for i in range(len(checked_pos)):
-        (x,y) = checked_pos[i]
+        (x, y) = checked_pos[i]
+        pygame.draw.rect(screen, black, (x + 20 + 10, y, 200, 24))
+
         if check_states[i]:
-            pygame.draw.rect(screen, (0,255,0),(x,y,20,20))
-            affiche_masque_element(check_states)
+            pygame.draw.rect(screen, (0, 255, 0), (x, y, 20, 20))
         else:
-            pygame.draw.rect(screen, (255,0,0),(x,y,20,20))
-
-
-
+            pygame.draw.rect(screen, (255, 0, 0), (x, y, 20, 20))
 
         font = pygame.font.Font(None, 24)
-
-
         text = font.render(textes[i], True, white)
-
         screen.blit(text, (x + 20 + 10, y))
 
 def affiche_masque_element(check_states):
@@ -464,17 +461,10 @@ def recherche_elm(texte):
             screen.blit(text_surface, text_rect)
             screen.blit(text_surface_2, text_rect_2)
         else:
-            if screen.get_at((10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)) == black:
-                # Si la case est noire, ne pas exécuter le reste du code
-                continue
             pygame.draw.rect(screen, black, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
 
 
-
-
 screen.fill(black)
-dessine_checkbox(checked_pos, check_states)
-dessine_tableau()
 
 
 run = True
@@ -488,6 +478,8 @@ while run:
                 (check_x, check_y) = checked_pos[i]
                 if check_x <= x <= check_x + 20 and check_y <= y <= check_y + 20:
                     check_states[i] = not check_states[i]
+
+
 
         if event.type == pygame.MOUSEMOTION:
             souris_pos = pygame.mouse.get_pos()
@@ -511,16 +503,16 @@ while run:
                         recherche_elm(search_text)
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
                     search_text = search_text[:-1]
-                elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9:
+                elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9: # Vérifie si la touche pressée est une lettre de l'alphabet (a à z) ou un chiffre (0 à 9)
                     search_text += event.unicode
 
 
-
-
     #Proprieter Tableau
+
     dessine_search_bar()
-
-
+    dessine_tableau()
+    dessine_checkbox(checked_pos, check_states)
+    affiche_masque_element(check_states)
 
     #affiche_rect()
     pygame.display.update()
