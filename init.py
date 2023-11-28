@@ -398,6 +398,7 @@ def affiche_rect(infos):
 def dessine_checkbox(checked_pos, check_states):
     for i in range(len(checked_pos)):
         (x, y) = checked_pos[i]
+
         pygame.draw.rect(screen, black, (x + 20 + 10, y, 200, 24))
 
         if check_states[i]:
