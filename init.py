@@ -41,64 +41,7 @@ rectangle = pygame.Rect(250,160,600,200)
 rectangle_1 = pygame.Rect(260,170,580,180)
 
 
-non_reactifs = {
-    (0, 0): "H",(13, 1): "C", (14, 1): "N", (15, 1): "O", (16, 1): "F",
-    (14, 2): "P", (15, 2): "S", (16, 2): "Cl",(15, 3): "Se",
-    (16, 3): "Br",(16, 4): "I"
-}
 
-metaux_alcalin = {
-    (0, 1): "Li",(0, 2): "Na",(0, 3): "K",
-    (0, 4): "Rb",(0,5) : "Cs",(0,6) : "Fr"
-}
-metaux_alcalino = {
-    (1, 1): "Be",(1, 2): "Mg",(1, 3): "Ca",
-    (1, 4): "Sr", (1,5) : "Ba", (1,6) : "Ra"
-}
-
-meteaux_de_transition = {
-    (2, 3): "Sc", (3, 3): "Ti", (4, 3): "V", (5, 3): "Cr", (6, 3): "Mn", (7, 3): "Fe",
-    (8, 3): "Co", (9, 3): "Ni", (10, 3): "Cu", (11, 3): "Zn",(2, 4): "Y", (3, 4): "Zr",
-    (4, 4): "Nb", (5, 4): "Mo", (6, 4): "Tc", (7, 4): "Ru",(8, 4): "Rh", (9, 4): "Pd",
-    (10, 4): "Ag", (11, 4): "Cd",(3,5) : "Hf" , (4,5) : "Ta" , (5,5) : "W",(6,5) : "Re",
-    (7,5) : "Os" , (8,5) : "Ir" , (9,5) : "Pt", (10,5) : "Au" , (11,5) : "Hg" ,
-    (3,6) : "Rf" , (4,6) : "Db" , (5,6) : "Sg",(6,6) : "Bh", (7,6) : "Hs" ,
-}
-
-metaloide = {
-    (12, 1): "B",(13, 2): "Si",(13, 3): "Ge", (14, 3): "As",
-    (14,4): "Sb", (15, 4): "Te"
-}
-
-meteaux_post_transition = {
-    (12, 2): "Al",(12, 3): "Ga",(12, 4): "In", (13, 4): "Sn",
-    (12,5) : "Ti" , (13,5) : "Pb",
-    (14,5) : "Bi", (15,5) : "Po" , (16,5) : "At" ,
-}
-
-propriete_inconnue = {
-    (8,6) : "Mt" , (9,6) : "Ds", (10,6) : "Rg" , (11,6) : "Cn" ,
-    (12,6) : "Nh" , (13,6) : "Fi",(14,6) : "Mc", (15,6) : "Lv" ,
-    (16,6) : "Ts" , (17,6) : "Og"
-}
-
-lanthanide = {
-    (3,7) : "Ce", (4,7) : "Pr" , (5,7) : "Nd" , (6,7) : "Pm",
-    (7,7) : "Sm" , (8,7) : "Eu" , (9,7) : "Gd" , (10,7) : "Tb",
-    (11,7) : "Dy", (12,7) : "Ho" , (13,7) : "Er" , (14,7) : "Tm",
-    (15,7): "Yb", (16,7) : "Lu", (2, 7): "La"
-}
-
-actinide = {
-    (2,8) : "Ac",(3,8) : "Th", (4,8) : "Pa" , (5,8) : "U" ,
-    (6,8) : "Np", (7,8) : "Pu" , (8,8) : "Am" , (9,8) : "Cm" , (10,8) : "Bk",
-    (11,8) : "Cf", (12,8) : "Es" , (13,8) : "Fm" , (14,8) : "Md", (15,8): "No", (16,8) : "Lr"
-}
-
-gaz_noble = {
-    (17,0) : "He", (17,1) : "Ne", (17,2) : "Ar", (17,3) : "Kr",
-    (17,4) : "Xe", (17,5) : "Rn"
-}
 
 element_chimiques = {
     (0, 0): ["H", "1", "Hydrogène", "1.0078", "1s1"],
@@ -283,78 +226,6 @@ def dessine_tableau():
 
 
 
-def non_reactif(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in non_reactifs:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-def metaux_alcalins(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in metaux_alcalin:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-def metaux_alcalinos(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in metaux_alcalino:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-def meteaux_de_transitions(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in meteaux_de_transition:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-def metaloides(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in metaloide:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-
-def meteaux_post_transitions(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in meteaux_post_transition:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-def propriete_inconnues(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in propriete_inconnue:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-def lanthanides(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in lanthanide:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-def actinides(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in actinide:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-def gaz_nobles(check_states):
-    for i in range(18):
-        for j in range(9):
-            if (i,j) in gaz_noble:
-                if not check_states:
-                    pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
-
-
 def coordonnees(souris_pos):
     x,y = souris_pos
     i = (x - 10) // 100
@@ -399,9 +270,8 @@ def dessine_search_bar():
 def recherche_elm(texte):
     resultats_recherche = []
 
-
     for coords, details in element_chimiques.items():
-        if texte.lower() in [info.lower() for info in details]:
+        if texte.lower() in details[0].lower() or texte.lower() in details[2].lower():
             resultats_recherche.append(coords)
 
     for coords, details in element_chimiques.items():
@@ -417,8 +287,6 @@ def recherche_elm(texte):
             screen.blit(text_surface_2, text_rect_2)
         else:
             pygame.draw.rect(screen, black, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
-
-
 
 
 screen.fill(black)
