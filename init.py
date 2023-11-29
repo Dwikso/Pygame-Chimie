@@ -355,14 +355,6 @@ def gaz_nobles(check_states):
                     pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
 
 
-
-checked_pos = [(50, 900), (50, 930), (300, 900),
-               (300, 930),(600,900),(600,930),(900,900),
-               (900,930), (1200,900),(1200,930)]
-check_states = [True, True, True, True,True, True, True, True, True, True]
-textes = ["non_reactifs", "metaux_alcalins", "metaux_alcalino","meteaux_de_transition", "metaloides", "meteaux_post_transition",
-          "propriete_inconnues", "lanthanides", "actinides", "gaz_nobles"]
-
 def coordonnees(souris_pos):
     x,y = souris_pos
     i = (x - 10) // 100
@@ -374,9 +366,9 @@ def informations_sup(souris_pos, dic):
     cle = (i, j)
     if cle in dic:
         value = dic[cle]
-        return value  # Retourne les informations si elles existent
+        return value
     else:
-        return None  # Retourne None si les informations n'existent pas
+        return None
 
 
 def affiche_rect(infos):
@@ -394,46 +386,6 @@ def affiche_rect(infos):
             text_rect.center = (550, y)
             screen.blit(text_surface, text_rect)
             y += 30 #Evite que le texte soit sur la meme ligne
-
-def dessine_checkbox(checked_pos, check_states):
-    for i in range(len(checked_pos)):
-        (x, y) = checked_pos[i]
-
-        pygame.draw.rect(screen, black, (x + 20 + 10, y, 200, 24))
-
-        if check_states[i]:
-            pygame.draw.rect(screen, (0, 255, 0), (x, y, 20, 20))
-        else:
-            pygame.draw.rect(screen, (255, 0, 0), (x, y, 20, 20))
-
-        font = pygame.font.Font(None, 24)
-        text = font.render(textes[i], True, white)
-        screen.blit(text, (x + 20 + 10, y))
-
-def affiche_masque_element(check_states):
-    if not check_states[0]:
-        non_reactif(False)
-    else:
-        non_reactif(True)
-    if not check_states[1]:
-        metaux_alcalins(False)
-    if not check_states[2]:
-        metaux_alcalinos(False)
-    if not check_states[3]:
-        meteaux_de_transitions(False)
-    if not check_states[4]:
-        metaloides(False)
-    if not check_states[5]:
-        meteaux_post_transitions(False)
-    if not check_states[6]:
-        propriete_inconnues(False)
-    if not check_states[7]:
-        lanthanides(False)
-    if not check_states[8]:
-        actinides(False)
-    if not check_states[9]:
-        gaz_nobles(False)
-
 
 
 def dessine_search_bar():
@@ -470,9 +422,7 @@ def recherche_elm(texte):
 
 
 screen.fill(black)
-
-
-
+dessine_tableau()
 
 run = True
 while run:
@@ -488,21 +438,15 @@ while run:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = event.pos
-            for i in range(len(checked_pos)):
-                (check_x, check_y) = checked_pos[i]
-                if check_x <= x <= check_x + 20 and check_y <= y <= check_y + 20:
-                    check_states[i] = not check_states[i]
-
             souris_x, souris_y = event.pos
             active = search_rect.x < souris_x + search_rect.width and \
                      search_rect.y < souris_y + search_rect.height
             if active:
                 search_text = ""
 
-        dessine_search_bar()
-        dessine_tableau()
-        dessine_checkbox(checked_pos, check_states)
-        affiche_masque_element(check_states)
+
+
+
 
         if event.type == pygame.KEYUP:
             if active:
@@ -518,13 +462,8 @@ while run:
                     search_text += event.unicode
 
 
-
-
-
-
-
     #Proprieter Tableau
-
+    dessine_search_bar()
 
     #affiche_rect()
     pygame.display.update()
