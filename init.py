@@ -338,6 +338,7 @@ while run:
                 elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9: #vérifie si la touche de clavier associée à l'événement event est une lettre minuscule (a à z) ou un chiffre (0 à 9).
                     search_text += event.unicode
 
+
     #Affiche la barre de recherche
     dessine_search_bar()
 
