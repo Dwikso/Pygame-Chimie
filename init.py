@@ -1,6 +1,7 @@
 import pygame
 from sys import exit
 
+#Prorietes de la fenetre
 pygame.init()
 width = 1900
 height = 1000
@@ -9,6 +10,7 @@ pygame.display.set_caption('Tableau Périodique')
 font_element = pygame.font.Font(None, 36)
 font_poids = pygame.font.Font(None, 16)
 
+#Couleurs
 bleu_nuit = (36, 77, 87)
 bourgogne = (98, 46, 57)
 bleu_indigo = (63, 57, 95)
@@ -36,13 +38,7 @@ active = False
 checked = False
 
 
-
-rectangle = pygame.Rect(250,160,600,200)
-rectangle_1 = pygame.Rect(260,170,580,180)
-
-
-
-
+#Dico contenant tout les informations 
 element_chimiques = {
     (0, 0): ["H", "1", "Hydrogène", "1.0078", "1s1"],
     (17, 0): ["He", "2", "Hélium", "4.0026", "1s2"],
@@ -164,18 +160,14 @@ element_chimiques = {
     (16, 8): ["Lr", "103", "Lawrencium", "262", "[Rn] 5f14 6d1 7s2 7p1"],
 }
 
-
-
-
 def dessine_tableau():
+    """
+    Dessine le tableau Periodique 
+    """
     for i in range(18):
         for j in range(9):
-            #if i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [0]:
-            #pygame.draw.rect(screen, black,(10 + i * 100, 150 + j * 80, 60, 60))
             if i in [0] and j in [0] or i in [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [7] :
                 pygame.draw.rect(screen, bleu_cobalt, (10 + i * 100, 150 + j * 80, 60, 60))
-            #elif i in [2,3,4,5,6,7,8,9,10,11] and j in [0,1,2] or i in [0,1,17] and j in [7,8]:
-            #pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [13,14,15,16] and j in [1] or i in [14,15,16] and j in [2] or i in [15,16] and j in [3] or i in [16] and j in [4]:
                 pygame.draw.rect(screen, bleu_acier, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [0] and j in [1,2,3,4,5,6]:
@@ -184,8 +176,6 @@ def dessine_tableau():
                 pygame.draw.rect(screen, bourgogne, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [2,3,4,5,6,7,8,9,10,11] and j in [3,4] or  i in [3,4,5,6,7,8,9,10,11] and j in [5] or  i in [3,4,5,6,7] and j in [6]:
                 pygame.draw.rect(screen, purple, (10 + i * 100, 150 + j * 80, 60, 60))
-            #elif i in [2] and j in [5,6]:
-            #pygame.draw.rect(screen, black, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [7,8,9,10,11,12,13,14,15,16,17] and j in [6]:
                 pygame.draw.rect(screen, gris_ardois, (10 + i * 100, 150 + j * 80, 60, 60))
             elif i in [12] and j in [2,3,4,5] or i in [13] and j in [4,5] or i in [13,14,15,16] and j in [5]:
@@ -195,9 +185,7 @@ def dessine_tableau():
             elif i in [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] and j in [8] :
                 pygame.draw.rect(screen, marron_rougeatre, (10 + i * 100, 150 + j * 80, 60, 60))
 
-
-
-            #Afiche la lettre
+            #Afiche le symbole
             if (i, j) in element_chimiques:
                 elm_chimique = element_chimiques[(i, j)][0]
             else:
@@ -227,12 +215,22 @@ def dessine_tableau():
 
 
 def coordonnees(souris_pos):
+    """
+    Recuperes les coordonnées de la souris
+    souris_pos -> int
+    """
     x,y = souris_pos
     i = (x - 10) // 100
     j = (y - 150) // 80
     return int(i), int(j)
 
+
 def informations_sup(souris_pos, dic):
+    """
+    Verifie si quand il y a survol sur un rectangle l'element est dans element_chimiques
+    souris_pos -> int
+    dic -> dic
+    """
     (i, j) = coordonnees(souris_pos)
     cle = (i, j)
     if cle in dic:
@@ -243,6 +241,9 @@ def informations_sup(souris_pos, dic):
 
 
 def affiche_rect(infos):
+    """
+    Affiche un rectangle avec les information supplementaire qui sont la liste element_chimiques
+    """
     if infos is not None:
         pygame.draw.rect(screen, white, (250, 160, 600, 200))
         pygame.draw.rect(screen, black, (260, 170, 580, 180))
@@ -260,6 +261,9 @@ def affiche_rect(infos):
 
 
 def dessine_search_bar():
+    """
+    Dessine la barre de recherche
+    """
     pygame.draw.rect(screen, search_color, search_rect)
 
     text_surface = search_font.render(search_text, True, black)
@@ -268,6 +272,11 @@ def dessine_search_bar():
     active = False
 
 def recherche_elm(texte):
+    """
+    Verifie que l'element/symbole/mot rerchercher dans le dico element_chimiques
+    ensuite l'ajoute dans la liste puis affiche tout les rectangle qui contient soit le mots/symbole si il y en a plusieurs
+    texte -> str
+    """
     resultats_recherche = []
 
     for coords, details in element_chimiques.items():
@@ -288,10 +297,14 @@ def recherche_elm(texte):
         else:
             pygame.draw.rect(screen, black, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
 
-
+#Propriete tableau
 screen.fill(black)
+
+#Affiche la tableau
 dessine_tableau()
 
+
+#Boucle principale
 run = True
 while run:
     for event in pygame.event.get():
@@ -301,7 +314,7 @@ while run:
             souris_pos = pygame.mouse.get_pos()
             infos = informations_sup(souris_pos, element_chimiques)
             coords = ((souris_pos[0] - 10) // 100, (souris_pos[1] - 150) // 80)
-            if infos and screen.get_at((10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)) != black:
+            if infos and screen.get_at((10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)) != black: #Evite que si des rectangle sont passer en noir il puisse interagir avec la souris
                 affiche_rect(infos)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -311,10 +324,6 @@ while run:
                      search_rect.y < souris_y + search_rect.height
             if active:
                 search_text = ""
-
-
-
-
 
         if event.type == pygame.KEYUP:
             if active:
@@ -326,11 +335,10 @@ while run:
                 elif event.key == pygame.K_BACKSPACE:
                     search_text = search_text[:-1]
                     dessine_tableau()
-                elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9:
+                elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9: #vérifie si la touche de clavier associée à l'événement event est une lettre minuscule (a à z) ou un chiffre (0 à 9).
                     search_text += event.unicode
 
-
-    #Proprieter Tableau
+    #Affiche la barre de recherche
     dessine_search_bar()
 
     #affiche_rect()
