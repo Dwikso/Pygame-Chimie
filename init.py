@@ -243,24 +243,34 @@ def informations_sup(souris_pos, dic):
     else:
         return None
     
+    
 def affiche_rect(infos):
     """
     Affiche un rectangle avec les information supplementaire qui sont la liste element_chimiques
     """
-    if infos is not None:
+    if infos  is not None:
         pygame.draw.rect(screen, white, (250, 160, 600, 200))
         pygame.draw.rect(screen, black, (260, 170, 580, 180))
 
 
         font = pygame.font.Font(None, 36)
         y = 190
+        
 
         for info in infos:
-            text_surface = font.render(str(info), True, white)
-            text_rect = text_surface.get_rect()
-            text_rect.center = (550, y)
-            screen.blit(text_surface, text_rect)
-            y += 30 #Evite que le texte soit sur la meme ligne
+            if type(info) == list: #Evite que le texte soit afficher sous forme de list
+                for element in info:
+                    text_surface = font.render(element, True, white)
+                    text_rect = text_surface.get_rect()
+                    text_rect.center = (550, y)
+                    screen.blit(text_surface, text_rect)
+                    y += 30 #Evite que le texte soit sur la meme ligne
+            else:
+                text_surface = font.render(info, True, white)
+                text_rect = text_surface.get_rect()
+                text_rect.center = (550, y)
+                screen.blit(text_surface, text_rect)
+                
 
 
 def dessine_search_bar():
@@ -317,7 +327,7 @@ def electron_configuration(Z):
     couches=["[He] ","[Ne] ","[Ar] ","[Kr] ","[Xe] ","[Rn] "]
     if (Z<=2) :
         n=Z
-        couche=electron_core(n,0)
+        couche=electron_core(n,1)
     elif (Z>2 and Z<=10) :
         n=Z-2
         couche = couches[0]+electron_core(n,1)
@@ -342,7 +352,7 @@ def electron_configuration(Z):
 
 def get_config(element):
     """
-    Verifi si un element est dans le dictionnaire
+    Verifi si un element est dans le dictionnaire si il y est on peut obtenir sa configuration electroniques
     dictionnaire -> {[list]}
     element -> str
     """
@@ -379,9 +389,6 @@ def recherche_elm(texte):
         else:
             pygame.draw.rect(screen, black, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
 
-
-
-
 #Propriete tableau
 screen.fill(black)
 #Affiche la tableau
@@ -396,7 +403,6 @@ while run:
             run = False
         if event.type == pygame.MOUSEMOTION:
             souris_pos = pygame.mouse.get_pos()
-            #infos = informations_sup(souris_pos, element_chimiques)
             infos = informations_sup(souris_pos, element_chimiques)
             coords = ((souris_pos[0] - 10) // 100, (souris_pos[1] - 150) // 80)
             if infos and screen.get_at((10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)) != black: #Evite que si des rectangle sont passer en noir il puisse interagir avec la souris
@@ -423,14 +429,11 @@ while run:
                 elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9: #vérifie si la touche de clavier associée à l'événement event est une lettre minuscule (a à z) ou un chiffre (0 à 9).
                     search_text += event.unicode
 
-
     #Affiche la barre de recherche
     dessine_search_bar()
 
     #affiche_rect()
     pygame.display.update()
-
-
 
 pygame.quit()
 exit()
