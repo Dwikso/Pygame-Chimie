@@ -204,15 +204,12 @@ def dessine_tableau():
             else:
                 elm_poids = ""
 
-
             text_surface = font_poids.render(elm_poids, True, (255, 255, 255))
 
             text_rect = text_surface.get_rect()
             text_rect.center = (-3 + i * 100 + 30, 173 + j * 80 + 30)
 
             screen.blit(text_surface, text_rect)
-
-
 
 
 def coordonnees(souris_pos):
@@ -243,7 +240,6 @@ def informations_sup(souris_pos, dic):
     else:
         return None
     
-    
 def affiche_rect(infos):
     """
     Affiche un rectangle avec les information supplementaire qui sont la liste element_chimiques
@@ -256,7 +252,6 @@ def affiche_rect(infos):
         font = pygame.font.Font(None, 36)
         y = 190
         
-
         for info in infos:
             if type(info) == list: #Evite que le texte soit afficher sous forme de list
                 for element in info:
@@ -282,7 +277,7 @@ def dessine_search_bar():
     text_surface = search_font.render(search_text, True, black)
     screen.blit(text_surface, (search_rect.x+5, search_rect.y+5))
     search_rect.w = max(100, text_surface.get_width()+10)
-    active = False
+    
 
 def electron_core(n,x):
     electron_config = ""
@@ -352,42 +347,34 @@ def electron_configuration(Z):
 
 def get_config(element):
     """
-    Verifi si un element est dans le dictionnaire si il y est on peut obtenir sa configuration electroniques
+    Verifi si un element est dans le dictionnaire si il y est, alors on peut obtenir sa configuration electroniques
     dictionnaire -> {[list]}
     element -> str
     """
     for infos in element_chimiques.values():
-        symbole = infos[0]
         numero_atomique = int(infos[1])
-        if element == symbole:
+        if element == infos[0]:
             couche_electronique = electron_configuration(numero_atomique)
-            return str(couche_electronique)
+            return couche_electronique
+
 
 def recherche_elm(texte):
     """
-    Verifie que l'element/symbole/mot rerchercher est dans le dico element_chimiques
-    ensuite l'ajoute dans la liste puis affiche tout les rectangle qui contient soit le mots/symbole si il y en a plusieurs
+    Recherche tout les elements contenant la chaine de caractères passer en parametres que ce soit une lettre ou un texte
+    et ensuite les ajoute dans une liste resultats_recherche pour ensuite n'afficher que ce etant contenue dans la liste 
+    et masque les autres en changant leur couleurs en noir
     texte -> str
     """
     resultats_recherche = []
 
     for coords, details in element_chimiques.items():
-        if texte.lower() in details[0].lower() or texte.lower() in details[2].lower():
+        if texte.lower() in details[0].lower() and texte.lower() in details[2].lower(): #Convertie tout les texte en minuscule que ce soit le texte passer en parametres ou le texte contenu dans le dictionnaire element_chimiques
             resultats_recherche.append(coords)
             
-    
-        if coords in resultats_recherche:
-            pygame.draw.rect(screen, rouge_fonce, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
-            text_surface = font_element.render(element_chimiques[coords][0], True, white)
-            text_surface_2 = font_poids.render(element_chimiques[coords][3], True, white)
-            text_rect = text_surface.get_rect()
-            text_rect_2 = text_surface_2.get_rect()
-            text_rect.center = (10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)
-            text_rect_2.center = (-3 + coords[0] * 100 + 30, 173 + coords[1] * 80 + 30)
-            screen.blit(text_surface, text_rect)
-            screen.blit(text_surface_2, text_rect_2)
-        else:
-            pygame.draw.rect(screen, black, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60))
+        if coords not in resultats_recherche:
+            pygame.draw.rect(screen, black, (10 + coords[0] * 100, 150 + coords[1] * 80, 60, 60)) 
+
+
 
 #Propriete tableau
 screen.fill(black)
@@ -408,7 +395,7 @@ while run:
             if infos and screen.get_at((10 + coords[0] * 100 + 30, 150 + coords[1] * 80 + 30)) != black: #Evite que si des rectangle sont passer en noir il puisse interagir avec la souris
                 affiche_rect(infos)
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONUP: #Click event pour pouvoir activer la barre de recherche
             x, y = event.pos
             souris_x, souris_y = event.pos
             active = search_rect.x < souris_x + search_rect.width and \
@@ -425,8 +412,9 @@ while run:
                         recherche_elm(search_text)
                 elif event.key == pygame.K_BACKSPACE:
                     search_text = search_text[:-1]
-                    dessine_tableau()
-                elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9: #vérifie si la touche de clavier associée à l'événement event est une lettre minuscule (a à z) ou un chiffre (0 à 9).
+                    if search_text == "": #Reinitialisation du tableau uniquement quand la barre de recherche est vide
+                        dessine_tableau()
+                elif pygame.K_a <= event.key <= pygame.K_z or pygame.K_0 <= event.key <= pygame.K_9: #vérifie si la touche de clavier associée à l'événement event est une lettre minuscule (a à z) ou un chiffre (0 à 9). et evite d'avoir des caractères speciaux quand la touche entree est presse
                     search_text += event.unicode
 
     #Affiche la barre de recherche
